@@ -41,9 +41,9 @@ AFlyingPawn::AFlyingPawn()
 	SpringArm->SetupAttachment(RootComponent);	// Attach SpringArm to RootComponent
 	SpringArm->TargetArmLength = 300.0f; // The camera follows at this distance behind the character	
 	SpringArm->SocketOffset = FVector(0.f, 0.f, 60.f);
-	SpringArm->bEnableCameraLag = true;	// Do not allow camera to lag
+	SpringArm->bEnableCameraLag = true;
 	SpringArm->CameraLagSpeed = 10.f;
-	SpringArm->bEnableCameraRotationLag = true;	// Do not allow camera to lag
+	SpringArm->bEnableCameraRotationLag = true;
 	SpringArm->CameraRotationLagSpeed = 10.f;
 	SpringArm->bInheritPitch = false;
 	SpringArm->bInheritRoll = false;
@@ -55,8 +55,15 @@ AFlyingPawn::AFlyingPawn()
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);	// Attach the camera
 	Camera->bUsePawnControlRotation = false; // Don't rotate camera with controller
 
-	VerticalTurnSpeed = 50.f;
-	HorizontalTurnSpeed = 100.f;
+	MaxHorizontalTurnSpeed = 100.f;
+	CurrentHorizontalSpeed = 0.f;
+
+	MaxVerticalAngle = 30.f;
+	CurrentVerticalAngle = 0.f;
+
+	// Inverse of how long it takes to get to max turning speed. Total time = 1 second / HorizontalTurnAcceloration
+	HorizontalTurnAcceloration = 10.f;
+	VerticalTurAcceloration = 2.5f;
 }
 
 // Called when the game starts or when spawned
@@ -71,10 +78,6 @@ void AFlyingPawn::Tick(float DeltaTime)
 {
 	const FVector LocalMove = FVector(1000.f * DeltaTime, 0.f, 0.f);
 	AddActorLocalOffset(LocalMove, true);
-
-	FRotator CurrentRotation = GetActorRotation();
-	CurrentRotation.Roll = 0;
-	SetActorRotation(CurrentRotation);
 }
 
 // Called to bind functionality to input
@@ -89,17 +92,29 @@ void AFlyingPawn::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 }
 
 void AFlyingPawn::VerticalInput(float Input) {
-	// Calculate change in rotation this frame
-	FRotator DeltaRotation(-1 * Input * VerticalTurnSpeed * GetWorld()->GetDeltaSeconds(), 0, 0);
+	FRotator CurrentRotation = GetActorRotation();
+	if (Input != 0) {
+		CurrentRotation.Pitch = FMath::Lerp(CurrentRotation.Pitch, -1 * Input * MaxVerticalAngle, GetWorld()->GetDeltaSeconds() * VerticalTurAcceloration);
+	}
+	else {
+		CurrentRotation.Pitch = FMath::Lerp(CurrentRotation.Pitch, 0.f, GetWorld()->GetDeltaSeconds() * VerticalTurAcceloration);
+	}
 
-	// Rotate plane
-	AddActorLocalRotation(DeltaRotation);
-
+	// Force object to not roll. Handled by the mesh instead
+	CurrentRotation.Roll = 0;
+	SetActorRotation(CurrentRotation);
 }
 
 void AFlyingPawn::HoriontalInput(float Input) {
+	if (Input != 0) {
+		CurrentHorizontalSpeed = FMath::Lerp(CurrentHorizontalSpeed, Input * MaxHorizontalTurnSpeed, GetWorld()->GetDeltaSeconds() * HorizontalTurnAcceloration);
+	}
+	else {
+		CurrentHorizontalSpeed = FMath::Lerp(CurrentHorizontalSpeed, 0.f, GetWorld()->GetDeltaSeconds() * 10);
+	}
+
 	// Calculate change in rotation this frame
-	FRotator DeltaRotation(0, Input * HorizontalTurnSpeed * GetWorld()->GetDeltaSeconds(), 0);
+	FRotator DeltaRotation(0, CurrentHorizontalSpeed * GetWorld()->GetDeltaSeconds(), 0);
 
 	// Rotate plane
 	AddActorLocalRotation(DeltaRotation);

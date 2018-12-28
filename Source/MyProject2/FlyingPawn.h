@@ -47,6 +47,12 @@ public:
 	void HoriontalInput(float input);
 
 private:
-	float VerticalTurnSpeed;
-	float HorizontalTurnSpeed;
+	float MaxHorizontalTurnSpeed;
+	float CurrentHorizontalSpeed;
+
+	float MaxVerticalAngle;
+	float CurrentVerticalAngle;
+
+	float HorizontalTurnAcceloration;
+	float VerticalTurAcceloration;
 };
