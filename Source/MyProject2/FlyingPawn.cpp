@@ -55,7 +55,8 @@ AFlyingPawn::AFlyingPawn()
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);	// Attach the camera
 	Camera->bUsePawnControlRotation = false; // Don't rotate camera with controller
 
-	TurnSpeed = 100.f;
+	VerticalTurnSpeed = 50.f;
+	HorizontalTurnSpeed = 100.f;
 }
 
 // Called when the game starts or when spawned
@@ -89,7 +90,7 @@ void AFlyingPawn::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 
 void AFlyingPawn::VerticalInput(float Input) {
 	// Calculate change in rotation this frame
-	FRotator DeltaRotation(-1 * Input * TurnSpeed * GetWorld()->GetDeltaSeconds(), 0, 0);
+	FRotator DeltaRotation(-1 * Input * VerticalTurnSpeed * GetWorld()->GetDeltaSeconds(), 0, 0);
 
 	// Rotate plane
 	AddActorLocalRotation(DeltaRotation);
@@ -98,7 +99,7 @@ void AFlyingPawn::VerticalInput(float Input) {
 
 void AFlyingPawn::HoriontalInput(float Input) {
 	// Calculate change in rotation this frame
-	FRotator DeltaRotation(0, Input * TurnSpeed * GetWorld()->GetDeltaSeconds(), 0);
+	FRotator DeltaRotation(0, Input * HorizontalTurnSpeed * GetWorld()->GetDeltaSeconds(), 0);
 
 	// Rotate plane
 	AddActorLocalRotation(DeltaRotation);
