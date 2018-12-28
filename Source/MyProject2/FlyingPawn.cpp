@@ -55,12 +55,15 @@ AFlyingPawn::AFlyingPawn()
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);	// Attach the camera
 	Camera->bUsePawnControlRotation = false; // Don't rotate camera with controller
 
-	MaxVerticalTurnSpeed = 50.f;
 	MaxHorizontalTurnSpeed = 100.f;
-	VerticalTurAcceloration = 5.f;
-	HorizontalTurnAcceloration = 10.f;
 	CurrentHorizontalSpeed = 0.f;
-	CurrentVerticalSpeed = 0.f;
+
+	MaxVerticalAngle = 30.f;
+	CurrentVerticalAngle = 0.f;
+
+	// Inverse of how long it takes to get to max turning speed. Total time = 1 second / HorizontalTurnAcceloration
+	HorizontalTurnAcceloration = 10.f;
+	VerticalTurAcceloration = 2.5f;
 }
 
 // Called when the game starts or when spawned
@@ -93,15 +96,25 @@ void AFlyingPawn::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 }
 
 void AFlyingPawn::VerticalInput(float Input) {
+	FRotator CurrentRotation = GetActorRotation();
+	if (Input != 0) {
+		CurrentRotation.Pitch = FMath::Lerp(CurrentRotation.Pitch, -1 * Input * MaxVerticalAngle, GetWorld()->GetDeltaSeconds() * VerticalTurAcceloration);
+	}
+	else {
+		CurrentRotation.Pitch = FMath::Lerp(CurrentRotation.Pitch, 0.f, GetWorld()->GetDeltaSeconds() * VerticalTurAcceloration);
+	}
+
+	CurrentRotation.Roll = 0;
+	SetActorRotation(CurrentRotation);
 	// Calculate change in rotation this frame
-	FRotator DeltaRotation(-1 * Input * MaxVerticalTurnSpeed * GetWorld()->GetDeltaSeconds(), 0, 0);
+	// FRotator DeltaRotation(-1 * Input * MaxVerticalTurnSpeed * GetWorld()->GetDeltaSeconds(), 0, 0);
 
 	// Rotate plane
-	AddActorLocalRotation(DeltaRotation);
+	// AddActorLocalRotation(DeltaRotation);
 
 }
 
-void AFlyingPawn::LogFloat(FString Mssage, float Float) {
+void AFlyingPawn::LogFloat(float Float) {
 	FString f = FString::SanitizeFloat(Float);
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, f);
 }
