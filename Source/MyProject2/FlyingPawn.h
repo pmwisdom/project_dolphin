@@ -44,16 +44,15 @@ public:
 
 	void VerticalInput(float input);
 
-	void LogFloat(float Float);
-
 	void HoriontalInput(float input);
 
 private:
 	float MaxHorizontalTurnSpeed;
-	float HorizontalTurnAcceloration;
 	float CurrentHorizontalSpeed;
 
-	float CurrentVerticalAngle;
-	float VerticalTurAcceloration;
 	float MaxVerticalAngle;
+	float CurrentVerticalAngle;
+
+	float HorizontalTurnAcceloration;
+	float VerticalTurAcceloration;
 };

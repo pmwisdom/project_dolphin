@@ -78,10 +78,6 @@ void AFlyingPawn::Tick(float DeltaTime)
 {
 	const FVector LocalMove = FVector(1000.f * DeltaTime, 0.f, 0.f);
 	AddActorLocalOffset(LocalMove, true);
-
-	FRotator CurrentRotation = GetActorRotation();
-	CurrentRotation.Roll = 0;
-	SetActorRotation(CurrentRotation);
 }
 
 // Called to bind functionality to input
@@ -104,19 +100,9 @@ void AFlyingPawn::VerticalInput(float Input) {
 		CurrentRotation.Pitch = FMath::Lerp(CurrentRotation.Pitch, 0.f, GetWorld()->GetDeltaSeconds() * VerticalTurAcceloration);
 	}
 
+	// Force object to not roll. Handled by the mesh instead
 	CurrentRotation.Roll = 0;
 	SetActorRotation(CurrentRotation);
-	// Calculate change in rotation this frame
-	// FRotator DeltaRotation(-1 * Input * MaxVerticalTurnSpeed * GetWorld()->GetDeltaSeconds(), 0, 0);
-
-	// Rotate plane
-	// AddActorLocalRotation(DeltaRotation);
-
-}
-
-void AFlyingPawn::LogFloat(float Float) {
-	FString f = FString::SanitizeFloat(Float);
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, f);
 }
 
 void AFlyingPawn::HoriontalInput(float Input) {
