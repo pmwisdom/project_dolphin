@@ -44,9 +44,15 @@ public:
 
 	void VerticalInput(float input);
 
+	void LogFloat(FString Message, float Float);
+
 	void HoriontalInput(float input);
 
 private:
-	float VerticalTurnSpeed;
-	float HorizontalTurnSpeed;
+	float MaxVerticalTurnSpeed;
+	float MaxHorizontalTurnSpeed;
+	float VerticalTurAcceloration;
+	float HorizontalTurnAcceloration;
+	float CurrentHorizontalSpeed;
+	float CurrentVerticalSpeed;
 };
