@@ -41,9 +41,9 @@ AFlyingPawn::AFlyingPawn()
 	SpringArm->SetupAttachment(RootComponent);	// Attach SpringArm to RootComponent
 	SpringArm->TargetArmLength = 300.0f; // The camera follows at this distance behind the character	
 	SpringArm->SocketOffset = FVector(0.f, 0.f, 60.f);
-	SpringArm->bEnableCameraLag = true;	// Do not allow camera to lag
+	SpringArm->bEnableCameraLag = true;
 	SpringArm->CameraLagSpeed = 10.f;
-	SpringArm->bEnableCameraRotationLag = true;	// Do not allow camera to lag
+	SpringArm->bEnableCameraRotationLag = true;
 	SpringArm->CameraRotationLagSpeed = 10.f;
 	SpringArm->bInheritPitch = false;
 	SpringArm->bInheritRoll = false;
