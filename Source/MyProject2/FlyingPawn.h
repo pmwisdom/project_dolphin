@@ -47,5 +47,6 @@ public:
 	void HoriontalInput(float input);
 
 private:
-	float TurnSpeed;
+	float VerticalTurnSpeed;
+	float HorizontalTurnSpeed;
 };
