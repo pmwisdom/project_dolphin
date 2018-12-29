@@ -1,0 +1,13 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UE4Editor-AdvancedSteamSessions-2116.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"C:\Users\pmwis\Documents\Unreal Projects\MyProject2\Intermediate\Build\Win64\MyProject2Editor\Development\Engine\SharedPCH.Engine.h.obj"
+"C:\Users\pmwis\Documents\Unreal Projects\MyProject2\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.cpp.obj"
+"C:\Users\pmwis\Documents\Unreal Projects\MyProject2\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\Module.AdvancedSteamSessions.gen.cpp.obj"
+"C:\Users\pmwis\Documents\Unreal Projects\MyProject2\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\PCLaunch.rc.res"
+/OUT:"C:\Users\pmwis\Documents\Unreal Projects\MyProject2\Plugins\AdvancedSessions\AdvancedSteamSessions\Intermediate\Build\Win64\UE4Editor\Development\AdvancedSteamSessions\UE4Editor-AdvancedSteamSessions-2116.lib"

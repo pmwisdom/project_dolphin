@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "Collector.h"
 #include "FlyingPawn.generated.h"
 
 UCLASS()
-class MYPROJECT2_API AFlyingPawn : public APawn
+class MYPROJECT2_API AFlyingPawn : public APawn, public ICollector
 {
 	GENERATED_BODY()
 
@@ -41,6 +42,11 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	// Collector Functions
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "MyCategory")
+	virtual void Collect() override;
+
 
 	void VerticalInput(float input);
 
