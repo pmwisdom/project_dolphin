@@ -91,6 +91,11 @@ void AFlyingPawn::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis("MoveRight", this, &AFlyingPawn::HoriontalInput);
 }
 
+void AFlyingPawn::Collect()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Blue, TEXT("Interface method overriden"));
+}
+
 void AFlyingPawn::VerticalInput(float Input) {
 	FRotator CurrentRotation = GetActorRotation();
 	if (Input != 0) {
